@@ -15,13 +15,13 @@ public class ItemHeartEmpty extends Item
 	
 	public ItemStack onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn)
     {
-		if(NBTHelper.getPersistedPlayerTag(playerIn).getBoolean("ghost") == false)
+		if(NBTHelper.getPersistedPlayerTag(playerIn).getBoolean("ghost") == true)
 		{
 			return itemStackIn;
 		}
 		else
 		{
-			if(playerIn.experienceLevel > Config.healthXP)
+			if(playerIn.experienceLevel >= Config.healthXP)
 			{
 				playerIn.experienceLevel -= Config.healthXP;
 		         --itemStackIn.stackSize;
