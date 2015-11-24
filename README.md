@@ -1,7 +1,7 @@
 Based on the mods by 
 RebelKeithy - http://www.minecraftforum.net/forums/mapping-and-modding/minecraft-mods/1285135-1-3-1-fear-death-v1-player-api
 and 
-Phinea - http://www.minecraftforum.net/forums/mapping-and-modding/minecraft-mods/1290150-1-6-2-smp-ssp-forge-soft-hardcore-regain-your
+Phineas - http://www.minecraftforum.net/forums/mapping-and-modding/minecraft-mods/1290150-1-6-2-smp-ssp-forge-soft-hardcore-regain-your
 
 
 Fear death again without worrying about losing your world.
