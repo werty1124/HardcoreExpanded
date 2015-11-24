@@ -9,6 +9,8 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.potion.Potion;
+import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.ChatComponentText;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
@@ -38,7 +40,6 @@ public class SHEventHandler
 					event.entity.addChatMessage(new ChatComponentText("SofterHardcore is meant to be played in survival. It will NOT prevent the deletion of worlds!"));
 				}
 			}	
-			
 			if(nbt.hasKey("ghost") && nbt.getBoolean("ghost"))
 			{
 				if(!event.world.isRemote)
@@ -54,7 +55,21 @@ public class SHEventHandler
 					player.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(nbt.getDouble("health"));
 				}
 			}
+			if(Config.ghostMode == false && player.getMaxHealth() <= 0)
+			{
+				addDebuffs(player);
+				player.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(Config.healthStarting/2);
+				nbt.setDouble("health", player.getMaxHealth());
+			}
 		}
+	}
+	
+	public void addDebuffs(EntityPlayer player)
+	{
+		player.addPotionEffect(new PotionEffect(Potion.weakness.id, 12000, 0, false, false));
+		player.addPotionEffect(new PotionEffect(Potion.digSlowdown.id, 12000, 0, false, false));
+		player.addPotionEffect(new PotionEffect(Potion.blindness.id, 3000, 0, false, false));
+		player.addPotionEffect(new PotionEffect(Potion.moveSlowdown.id, 12000, 0, false, false));
 	}
 	
 	@SubscribeEvent
@@ -68,7 +83,10 @@ public class SHEventHandler
 			nbt.setDouble("health", player.getMaxHealth());
 			if(player.getMaxHealth() <= 0)
 			{
-				nbt.setBoolean("ghost", true);	
+				if(Config.ghostMode)
+				{
+					nbt.setBoolean("ghost", true);
+				}
 			}
 		}
 	}

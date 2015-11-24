@@ -15,6 +15,8 @@ public class Config
 	public static int    	damageBoost;
 	public static int    	healthXP;
 	
+	public static boolean   ghostMode;
+	
 	public static void configInit(FMLPreInitializationEvent event)
 	{
 		Configuration config = new Configuration(new File("config/SofterHardcore.cfg"));
@@ -24,6 +26,7 @@ public class Config
 		deathAmount = config.get("Mechanics", "DeathAmount", 2D, "Amount of healh taken on death").getDouble();
 		damageBoost = config.get("Mechanics", "DamageBoost", 2, "Damage boost added to monsters").getInt();
 		healthXP = config.get("Mechanics", "ExperienceForHeart", 10, "Experience level needed to fill a heart").getInt();
+		ghostMode = config.get("Mechanics", "GhostMode", true, "If player will spawn with debuffs lasting 10 minutes").getBoolean();
 		config.save();
 	}
 }
