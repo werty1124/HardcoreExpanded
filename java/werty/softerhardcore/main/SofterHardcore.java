@@ -16,7 +16,9 @@ public class SofterHardcore
 	public static SofterHardcore instance;
 	
 	@SidedProxy(clientSide = References.CLIENT_PROXY_CLASS, serverSide = References.SERVER_PROXY_CLASS)
-	public static CommonProxy		proxy;	
+	public static CommonProxy		proxy;
+	
+	public static boolean hasCheckedVersion = false;
 	
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event)
@@ -31,7 +33,7 @@ public class SofterHardcore
 	{
 		proxy.registerRenders();
 		proxy.init(event);	
-		SHEventHandler.loadAllowedBlocks();
+		SHEventHandler.loadAllowedBlocksandItems();
 	}
 	
 	@EventHandler
