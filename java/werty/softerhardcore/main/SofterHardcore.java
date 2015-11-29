@@ -1,5 +1,6 @@
 package werty.softerhardcore.main;
 
+import net.minecraft.client.Minecraft;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
@@ -25,7 +26,9 @@ public class SofterHardcore
 	{	
 		Config.configInit(event);
 		SHItems.init();
+		SHBlocks.init();
 		MinecraftForge.EVENT_BUS.register(new SHEventHandler());
+		
 	}
 	
 	@EventHandler
@@ -34,6 +37,7 @@ public class SofterHardcore
 		proxy.registerRenders();
 		proxy.init(event);	
 		SHEventHandler.loadAllowedBlocksandItems();
+		SHWorldGenHandler.load();
 	}
 	
 	@EventHandler

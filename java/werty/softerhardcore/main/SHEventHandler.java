@@ -1,11 +1,12 @@
 package werty.softerhardcore.main;
 
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
@@ -21,10 +22,7 @@ import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.player.EntityItemPickupEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent.Action;
-import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.registry.FMLControlledNamespacedRegistry;
-import net.minecraftforge.fml.common.registry.GameData;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public class SHEventHandler 
@@ -34,7 +32,7 @@ public class SHEventHandler
 	private static List<Block> breakableBlocks = new ArrayList<Block>();
 	
 	private static List<Item> usableItems = new ArrayList<Item>();
-	
+
 	public static void loadAllowedBlocksandItems()
 	{
 		interactableBlocks.add(Blocks.acacia_door);
@@ -45,6 +43,7 @@ public class SHEventHandler
 		interactableBlocks.add(Blocks.lever);
 		interactableBlocks.add(Blocks.wooden_button);
 		interactableBlocks.add(Blocks.stone_button);
+		interactableBlocks.add(SHBlocks.ghostAltar);
 		
 		for(String s : Config.interactableBlocks.split(","))
 		{
@@ -65,6 +64,7 @@ public class SHEventHandler
 		}
 		
 		usableItems.add(SHItems.heart_full);
+		usableItems.add(SHItems.heart_empty);
 		
 		for(String s : Config.usableItems.split(","))
 		{
@@ -98,7 +98,7 @@ public class SHEventHandler
 					SofterHardcore.hasCheckedVersion = true;
 				}
 			}	
-			if(nbt.hasKey("ghost") && nbt.getBoolean("ghost"))
+			if(nbt.hasKey("ghost") && nbt.getBoolean("ghost") == true)
 			{
 				if(!event.world.isRemote)
 				{
@@ -247,8 +247,30 @@ public class SHEventHandler
 			if(nbt.getBoolean("ghost") == true)
 			{
 				event.setCanceled(true);
+			}	
+		}
+		
+		if(event.entityLiving instanceof EntityPlayer && Config.mobEffects == true)
+		{
+			EntityPlayer player = (EntityPlayer) event.entityLiving;
+			NBTTagCompound nbt = NBTHelper.getPersistedPlayerTag(player);
+			Random rand = new Random();
+			
+			if(event.source.getEntity() instanceof EntityZombie && event.source.getEntity() != null)
+			{
+				if(rand.nextInt(100) < Config.zombiePoisonChance)
+				{
+					player.addPotionEffect(new PotionEffect(Potion.poison.id, 150, 0, false, false));
+				}
 			}
 			
+			if("fall".equals(event.source.damageType))
+			{
+				if(rand.nextInt(100) < Config.fallStunChance)
+				{
+					player.addPotionEffect(new PotionEffect(Potion.moveSlowdown.id, 150, 0, false, false));
+				}
+			}
 		}
 	}
 	
@@ -283,5 +305,4 @@ public class SHEventHandler
 			}
 		}
 	}
-	
 }

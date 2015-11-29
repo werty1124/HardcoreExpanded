@@ -18,12 +18,18 @@ public class Config
 	public static int    	damageBoost;
 	public static int    	healthXP;
 	public static int		sicknessTicks;
+	public static int		altarGenChance;
+	public static int       zombiePoisonChance;
+	public static int		fallStunChance;
 	
 	public static boolean   ghostMode;
 	public static boolean   checkForUpdates;
 	public static boolean	healthEffects;
 	public static boolean   fiilEffects;
 	public static boolean   ghostInvisibility;
+	public static boolean   ghostFillHeart;
+	public static boolean   genGhostAltar;
+	public static boolean   mobEffects;
 	
 	public static String    interactableBlocks;
 	public static String    breakableBlocks;
@@ -43,11 +49,19 @@ public class Config
 		fiilEffects = config.get("Mechanics", "HeartFillEffects", true, "If player suffer temp. Debuff on filling up a heart").getBoolean();
 		ghostInvisibility = config.get("Mechanics", "GhostInvisibility", true, "Gain Invisibility as a ghost").getBoolean();
 		checkForUpdates = config.get("Mechanics", "CheckForUpdates", true, "Should mod check for updates?").getBoolean();
+		ghostFillHeart = config.get("Mechanics", "GhostHeartFill", false, "Can ghost players fill hearts?").getBoolean();
 		healthEffects = config.get("Mechanics", "HealthEffects", true, "Debuffs on thresholds at 1/2 and 1/3 health and a damage boost at full health").getBoolean();
 		
 		interactableBlocks = config.get("Ghost", "GhostInteractableBlocks", "modid:blockid", "Blocks ghost players can interact with using right click. Add blocks seperated with a , and using ModID:BlockID").getString();
 		breakableBlocks = config.get("Ghost", "GhostBreakableBlocks", "modid:blockid", "Blocks ghost players can break with. Add blocks seperated with a , and using ModID:BlockID").getString();
 		usableItems = config.get("Ghost", "GhostUsableItems", "modid:itemid", "Items ghost players can pick up and use. Add items seperated with a , and using ModID:itemID").getString();
+		
+		genGhostAltar = config.get("World", "GenGhostAltar", true, "Should ghost altars generate?").getBoolean();
+		altarGenChance = config.get("World", "GhostAltarChance", 5, "Ghost altar generation chance").getInt();
+		
+		mobEffects = config.get("Mobs", "MobEffects", true, "Should mobs have a chance to cause debuffs? Set to fale to disable all effects under mobs").getBoolean();
+		zombiePoisonChance = config.get("Mobs", "ZombiePoisonChance", 20, "Zombie poison chance. Set to 0 to disable").getInt();
+		fallStunChance = config.get("Mobs", "FallStunChance", 15, "Chance to be stunned on fall damage. Set to 0 to disable").getInt();
 		config.save();
 	}
 }

@@ -18,7 +18,7 @@ public class ItemHeartEmpty extends Item
 	
 	public ItemStack onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn)
     {
-		if(NBTHelper.getPersistedPlayerTag(playerIn).getBoolean("ghost") == true)
+		if(NBTHelper.getPersistedPlayerTag(playerIn).getBoolean("ghost") == true && Config.ghostFillHeart == false)
 		{
 			return itemStackIn;
 		}
@@ -30,7 +30,10 @@ public class ItemHeartEmpty extends Item
 		         --itemStackIn.stackSize;
 		         if(Config.fiilEffects)
 		         {
-		        	 playerIn.addChatMessage(new ChatComponentText("You feel weak after transfering energy to the crystal"));
+		        	 if(!worldIn.isRemote)
+		        	 {
+		        		 playerIn.addChatMessage(new ChatComponentText("You feel weak after transfering energy to the crystal"));
+		        	 }
 		        	 playerIn.addPotionEffect(new PotionEffect(Potion.weakness.id, Config.sicknessTicks, 0, false, false));
 		         }
 		         return new ItemStack(SHItems.heart_full);

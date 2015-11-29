@@ -16,6 +16,8 @@ public class ClientProxy extends CommonProxy
 	{
 		SHItems.registerRender(SHItems.heart_empty);
 		SHItems.registerRender(SHItems.heart_full);
+		
+		SHBlocks.registerRender(SHBlocks.ghostAltar);
 	}
 
 	
