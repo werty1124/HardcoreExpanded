@@ -4,7 +4,7 @@ and
 Phineas - http://www.minecraftforum.net/forums/mapping-and-modding/minecraft-mods/1290150-1-6-2-smp-ssp-forge-soft-hardcore-regain-your
 
 
-Fear death again without worrying about losing your world.
+Fear death again and add more of a challenge without worrying about losing your world.
 
 Features
 - Hearts decrease by 1 on death
