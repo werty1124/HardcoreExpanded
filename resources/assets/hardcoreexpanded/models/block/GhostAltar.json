@@ -1,8 +1,8 @@
 {
 "__comment": "3D Mesh designed with BDcraft Cubik LITE 0.93 Beta - http://bdcraft.net",
 "textures": {
-    "runes": "softerhardcore:blocks/altar_main",
-    "stone": "softerhardcore:blocks/altar_stone"
+    "runes": "hardcoreexpanded:blocks/altar_main",
+    "stone": "hardcoreexpanded:blocks/altar_stone"
 },
 "elements": [ 
 {

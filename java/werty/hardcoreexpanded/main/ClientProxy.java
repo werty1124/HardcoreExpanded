@@ -1,4 +1,4 @@
-package werty.softerhardcore.main;
+package werty.hardcoreexpanded.main;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
@@ -14,10 +14,10 @@ public class ClientProxy extends CommonProxy
 	@Override
 	public void registerRenders()
 	{
-		SHItems.registerRender(SHItems.heart_empty);
-		SHItems.registerRender(SHItems.heart_full);
+		HEItems.registerRender(HEItems.heart_empty);
+		HEItems.registerRender(HEItems.heart_full);
 		
-		SHBlocks.registerRender(SHBlocks.ghostAltar);
+		HEBlocks.registerRender(HEBlocks.ghostAltar);
 	}
 
 	

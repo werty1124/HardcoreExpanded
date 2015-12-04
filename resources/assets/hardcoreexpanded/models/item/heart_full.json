@@ -1,7 +1,7 @@
 {
     "parent": "builtin/generated",
     "textures": {
-        "layer0": "softerhardcore:items/heart_full"
+        "layer0": "hardcoreexpanded:items/heart_full"
     },
     "display": {
         "thirdperson": {

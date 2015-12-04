@@ -1,4 +1,4 @@
-package werty.softerhardcore.main;
+package werty.hardcoreexpanded.main;
 
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;

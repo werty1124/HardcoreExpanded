@@ -1,4 +1,4 @@
-package werty.softerhardcore.main;
+package werty.hardcoreexpanded.main;
 
 import java.io.BufferedReader;
 import java.io.IOException;

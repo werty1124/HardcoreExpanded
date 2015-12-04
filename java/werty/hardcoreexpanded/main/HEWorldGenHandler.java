@@ -1,4 +1,4 @@
-package werty.softerhardcore.main;
+package werty.hardcoreexpanded.main;
 
 import java.util.Random;
 
@@ -12,11 +12,11 @@ import net.minecraft.world.gen.ChunkProviderGenerate;
 import net.minecraftforge.fml.common.IWorldGenerator;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
-public class SHWorldGenHandler implements IWorldGenerator 
+public class HEWorldGenHandler implements IWorldGenerator 
 {
 	public static void load()
 	{
-		GameRegistry.registerWorldGenerator(new SHWorldGenHandler(), 0);
+		GameRegistry.registerWorldGenerator(new HEWorldGenHandler(), 0);
 	}
 
 	@Override

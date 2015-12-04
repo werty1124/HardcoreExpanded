@@ -1,4 +1,4 @@
-package werty.softerhardcore.main;
+package werty.hardcoreexpanded.main;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -30,6 +30,7 @@ public class Config
 	public static boolean   ghostFillHeart;
 	public static boolean   genGhostAltar;
 	public static boolean   mobEffects;
+	public static boolean   woodenToolDamage;
 	
 	public static String    interactableBlocks;
 	public static String    breakableBlocks;
@@ -51,6 +52,7 @@ public class Config
 		checkForUpdates = config.get("Mechanics", "CheckForUpdates", true, "Should mod check for updates?").getBoolean();
 		ghostFillHeart = config.get("Mechanics", "GhostHeartFill", false, "Can ghost players fill hearts?").getBoolean();
 		healthEffects = config.get("Mechanics", "HealthEffects", true, "Debuffs on thresholds at 1/2 and 1/3 health and a damage boost at full health").getBoolean();
+		woodenToolDamage = config.get("Mechanics", "WoodenToolDamage", false, "Should wooden tools do damage").getBoolean();
 		
 		interactableBlocks = config.get("Ghost", "GhostInteractableBlocks", "modid:blockid", "Blocks ghost players can interact with using right click. Add blocks seperated with a , and using ModID:BlockID").getString();
 		breakableBlocks = config.get("Ghost", "GhostBreakableBlocks", "modid:blockid", "Blocks ghost players can break with. Add blocks seperated with a , and using ModID:BlockID").getString();

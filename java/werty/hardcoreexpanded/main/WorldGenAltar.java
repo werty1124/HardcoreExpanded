@@ -1,4 +1,4 @@
-package werty.softerhardcore.main;
+package werty.hardcoreexpanded.main;
 
 import java.util.Random;
 
@@ -20,7 +20,7 @@ public class WorldGenAltar extends WorldGenerator
 
 		     if (worldIn.isAirBlock(blockpos1) && worldIn.getBlockState(blockpos1.down()).getBlock() == Blocks.grass)
 		     {
-		         worldIn.setBlockState(blockpos1, SHBlocks.ghostAltar.getDefaultState(), 2);
+		         worldIn.setBlockState(blockpos1, HEBlocks.ghostAltar.getDefaultState(), 2);
 		     }
 		}
 	    return true;

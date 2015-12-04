@@ -1,4 +1,4 @@
-package werty.softerhardcore.main;
+package werty.hardcoreexpanded.main;
 
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.player.EntityPlayer;
@@ -36,7 +36,7 @@ public class ItemHeartEmpty extends Item
 		        	 }
 		        	 playerIn.addPotionEffect(new PotionEffect(Potion.weakness.id, Config.sicknessTicks, 0, false, false));
 		         }
-		         return new ItemStack(SHItems.heart_full);
+		         return new ItemStack(HEItems.heart_full);
 			}
 		}
 		return itemStackIn;

@@ -1,4 +1,4 @@
-package werty.softerhardcore.main;
+package werty.hardcoreexpanded.main;
 
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.common.MinecraftForge;
@@ -11,10 +11,10 @@ import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 
 @Mod(modid = References.MODID, name = References.NAME, version = References.VERSION)
-public class SofterHardcore
+public class HardcoreExpanded
 {
 	@Instance(References.MODID)
-	public static SofterHardcore instance;
+	public static HardcoreExpanded instance;
 	
 	@SidedProxy(clientSide = References.CLIENT_PROXY_CLASS, serverSide = References.SERVER_PROXY_CLASS)
 	public static CommonProxy		proxy;
@@ -25,9 +25,9 @@ public class SofterHardcore
 	public void preInit(FMLPreInitializationEvent event)
 	{	
 		Config.configInit(event);
-		SHItems.init();
-		SHBlocks.init();
-		MinecraftForge.EVENT_BUS.register(new SHEventHandler());
+		HEItems.init();
+		HEBlocks.init();
+		MinecraftForge.EVENT_BUS.register(new HEEventHandler());
 		
 	}
 	
@@ -36,8 +36,8 @@ public class SofterHardcore
 	{
 		proxy.registerRenders();
 		proxy.init(event);	
-		SHEventHandler.loadAllowedBlocksandItems();
-		SHWorldGenHandler.load();
+		HEEventHandler.loadAllowedBlocksandItems();
+		HEWorldGenHandler.load();
 	}
 	
 	@EventHandler

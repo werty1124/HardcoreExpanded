@@ -1,14 +1,14 @@
 [
 {
-  "modid": "softerhardcore",
-  "name": "Softer Hardcore",
-  "description": "Fear death in survival without losing your world",
+  "modid": "hardcoreexpanded",
+  "name": "Hardcore Expanded",
+  "description": "Fear death again and add more of a challenge without worrying about losing your world.",
   "version": "${version}",
   "mcversion": "${mcversion}",
   "url": "",
   "updateUrl": "",
   "authorList": ["TheWerty1124"],
-  "credits": "Based on the mods by RebelKeithy and Phineas",
+  "credits": "Based partially on the mods by RebelKeithy and Phineas",
   "logoFile": "",
   "screenshots": [],
   "dependencies": []

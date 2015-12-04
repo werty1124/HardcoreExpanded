@@ -1,4 +1,4 @@
-package werty.softerhardcore.main;
+package werty.hardcoreexpanded.main;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -41,4 +41,5 @@ public class BlockAltar extends Block
 		}
 		return true;
 	}
+	
 }

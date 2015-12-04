@@ -1,14 +1,16 @@
-package werty.softerhardcore.main;
+package werty.hardcoreexpanded.main;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
 import net.minecraft.block.Block;
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.Potion;
@@ -25,7 +27,7 @@ import net.minecraftforge.event.entity.player.PlayerInteractEvent.Action;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
-public class SHEventHandler 
+public class HEEventHandler 
 {
 	
 	private static List<Block> interactableBlocks = new ArrayList<Block>();
@@ -43,7 +45,7 @@ public class SHEventHandler
 		interactableBlocks.add(Blocks.lever);
 		interactableBlocks.add(Blocks.wooden_button);
 		interactableBlocks.add(Blocks.stone_button);
-		interactableBlocks.add(SHBlocks.ghostAltar);
+		interactableBlocks.add(HEBlocks.ghostAltar);
 		
 		for(String s : Config.interactableBlocks.split(","))
 		{
@@ -63,8 +65,8 @@ public class SHEventHandler
 			}
 		}
 		
-		usableItems.add(SHItems.heart_full);
-		usableItems.add(SHItems.heart_empty);
+		usableItems.add(HEItems.heart_full);
+		usableItems.add(HEItems.heart_empty);
 		
 		for(String s : Config.usableItems.split(","))
 		{
@@ -91,11 +93,11 @@ public class SHEventHandler
 				{
 					event.entity.addChatMessage(new ChatComponentText("SofterHardcore is meant to be played in survival. It will NOT prevent the deletion of worlds!"));
 				}
-				if(Config.checkForUpdates && !SofterHardcore.hasCheckedVersion)
+				if(Config.checkForUpdates && !HardcoreExpanded.hasCheckedVersion)
 				{
 					check.run();
 					event.entity.addChatMessage(VersionChecker.uptoDate);
-					SofterHardcore.hasCheckedVersion = true;
+					HardcoreExpanded.hasCheckedVersion = true;
 				}
 			}	
 			if(nbt.hasKey("ghost") && nbt.getBoolean("ghost") == true)
@@ -166,7 +168,7 @@ public class SHEventHandler
 				}
 				if(Config.ghostInvisibility == true)
 				{
-					player.addPotionEffect(new PotionEffect(Potion.invisibility.id, 50, 0, false, false));
+					player.addPotionEffect(new PotionEffect(Potion.invisibility.id, 5, 0, false, false));
 				}
 			}
 			
@@ -205,7 +207,7 @@ public class SHEventHandler
 	}
 	
 	@SubscribeEvent
-	public void onPlayerHurt(LivingHurtEvent event)
+	public void onEntityHurt(LivingHurtEvent event)
 	{
 		if(event.entity instanceof EntityPlayer && event.source.getEntity() != null)
 		{
@@ -223,6 +225,7 @@ public class SHEventHandler
 			}
 			
 		}
+		
 		if(event.entity instanceof EntityPlayer)
 		{
 			EntityPlayer player = (EntityPlayer) event.entity;
@@ -234,6 +237,24 @@ public class SHEventHandler
 			}
 		}
 			
+		if(event.source.getEntity() instanceof EntityPlayer)
+		{
+			EntityPlayer player = (EntityPlayer) event.source.getEntity();
+			NBTTagCompound nbt = NBTHelper.getPersistedPlayerTag(player);
+			
+			
+			Item item = null;
+			
+			if(player.getHeldItem() != null)
+			{
+				item = player.getHeldItem().getItem();
+			}
+			
+			if(item != null && (item == Items.wooden_axe || item == Items.wooden_sword || item == Items.wooden_shovel || item == Items.wooden_pickaxe || item == Items.wooden_hoe) && Config.woodenToolDamage == false)
+			{
+				event.ammount = 0;
+			}
+		}
 	}
 	
 	@SubscribeEvent
@@ -247,7 +268,8 @@ public class SHEventHandler
 			if(nbt.getBoolean("ghost") == true)
 			{
 				event.setCanceled(true);
-			}	
+			}
+		
 		}
 		
 		if(event.entityLiving instanceof EntityPlayer && Config.mobEffects == true)
@@ -272,6 +294,7 @@ public class SHEventHandler
 				}
 			}
 		}
+		
 	}
 	
 	@SubscribeEvent
