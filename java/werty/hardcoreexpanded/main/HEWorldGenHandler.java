@@ -2,15 +2,14 @@ package werty.hardcoreexpanded.main;
 
 import java.util.Random;
 
-import net.minecraft.util.BlockPos;
+import cpw.mods.fml.common.IWorldGenerator;
+import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.biome.WorldChunkManager;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.ChunkProviderGenerate;
-import net.minecraftforge.fml.common.IWorldGenerator;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public class HEWorldGenHandler implements IWorldGenerator 
 {
@@ -33,10 +32,10 @@ public class HEWorldGenHandler implements IWorldGenerator
 		int x1 = x;
 		int y1 = 0;
 		int z1 = z;
-		BlockPos pos = new BlockPos(x1 * 16, 0, z1 * 16);
-		Chunk chunk = world.getChunkFromBlockCoords(pos);
+		
+		Chunk chunk = world.getChunkFromBlockCoords(x1, z1);
 		WorldChunkManager chunkManager = world.getWorldChunkManager();
-		BiomeGenBase biome = chunk.getBiome(pos, chunkManager);
+		BiomeGenBase biome = world.getBiomeGenForCoords(x1, z1);
 		
 		if(Config.genGhostAltar == true)
 		{
@@ -52,8 +51,7 @@ public class HEWorldGenHandler implements IWorldGenerator
 			int xRand = chunkX * 16 + rand.nextInt(16);
 			int yRand = rand.nextInt(100);
 			int zRand = chunkZ * 16 + rand.nextInt(16);
-			BlockPos position = new BlockPos(xRand, yRand, zRand);
-			gen.generate(world, rand, position);
+			gen.generate(world, rand, xRand, yRand, zRand);
 		}
 	}
 	

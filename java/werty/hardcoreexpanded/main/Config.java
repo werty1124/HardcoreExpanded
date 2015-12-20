@@ -1,12 +1,8 @@
 package werty.hardcoreexpanded.main;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
 
-import net.minecraft.block.Block;
 import net.minecraftforge.common.config.Configuration;
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 
 public class Config 
 {
@@ -36,9 +32,9 @@ public class Config
 	public static String    breakableBlocks;
 	public static String    usableItems;
 	
-	public static void configInit(FMLPreInitializationEvent event)
+	public static void configInit()
 	{
-		Configuration config = new Configuration(new File("config/SofterHardcore.cfg"));
+		Configuration config = new Configuration(new File("config/HardcoreExpanded.cfg"));
 		config.load();
 		healthStarting = config.get("Mechanics", "StartingHealth", 20D, "Starting health. Vanilla is 20").getDouble();
 		healthMax = config.get("Mechanics", "MaxHealth", 20D, "Max health. Vanilla is 20").getDouble();

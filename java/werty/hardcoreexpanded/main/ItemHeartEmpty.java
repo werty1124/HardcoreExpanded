@@ -34,7 +34,7 @@ public class ItemHeartEmpty extends Item
 		        	 {
 		        		 playerIn.addChatMessage(new ChatComponentText("You feel weak after transfering energy to the crystal"));
 		        	 }
-		        	 playerIn.addPotionEffect(new PotionEffect(Potion.weakness.id, Config.sicknessTicks, 0, false, false));
+		        	 playerIn.addPotionEffect(new PotionEffect(Potion.weakness.id, Config.sicknessTicks, 0, false));
 		         }
 		         return new ItemStack(HEItems.heart_full);
 			}

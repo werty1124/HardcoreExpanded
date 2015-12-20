@@ -1,2 +1,4 @@
 item.heart_empty.name=Empty Heart
 item.heart_full.name=Heart
+
+tile.ghost_altar.name=Ghost Altar

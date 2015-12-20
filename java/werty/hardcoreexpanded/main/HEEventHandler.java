@@ -4,8 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.block.Block;
-import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.entity.player.EntityPlayer;
@@ -22,10 +23,9 @@ import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.player.EntityItemPickupEvent;
+import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent.Action;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public class HEEventHandler 
 {
@@ -37,11 +37,7 @@ public class HEEventHandler
 
 	public static void loadAllowedBlocksandItems()
 	{
-		interactableBlocks.add(Blocks.acacia_door);
-		interactableBlocks.add(Blocks.oak_door);
-		interactableBlocks.add(Blocks.birch_door);
-		interactableBlocks.add(Blocks.spruce_door);
-		interactableBlocks.add(Blocks.dark_oak_door);
+		interactableBlocks.add(Blocks.wooden_door);
 		interactableBlocks.add(Blocks.lever);
 		interactableBlocks.add(Blocks.wooden_button);
 		interactableBlocks.add(Blocks.stone_button);
@@ -91,12 +87,12 @@ public class HEEventHandler
 			{
 				if(player.worldObj.getWorldInfo().isHardcoreModeEnabled())
 				{
-					event.entity.addChatMessage(new ChatComponentText("SofterHardcore is meant to be played in survival. It will NOT prevent the deletion of worlds!"));
+					player.addChatMessage(new ChatComponentText("SofterHardcore is meant to be played in survival. It will NOT prevent the deletion of worlds!"));
 				}
 				if(Config.checkForUpdates && !HardcoreExpanded.hasCheckedVersion)
 				{
 					check.run();
-					event.entity.addChatMessage(VersionChecker.uptoDate);
+					player.addChatMessage(VersionChecker.uptoDate);
 					HardcoreExpanded.hasCheckedVersion = true;
 				}
 			}	
@@ -104,7 +100,7 @@ public class HEEventHandler
 			{
 				if(!event.world.isRemote)
 				{
-					event.entity.addChatMessage(new ChatComponentText("You have exhausted all of your lives and can no longer interact with the world"));
+					player.addChatMessage(new ChatComponentText("You have exhausted all of your lives and can no longer interact with the world"));
 				}
 			}
 			else
@@ -127,10 +123,10 @@ public class HEEventHandler
 	
 	public void addDebuffs(EntityPlayer player)
 	{
-		player.addPotionEffect(new PotionEffect(Potion.weakness.id, Config.sicknessTicks, 0, false, false));
-		player.addPotionEffect(new PotionEffect(Potion.digSlowdown.id, Config.sicknessTicks, 0, false, false));
-		player.addPotionEffect(new PotionEffect(Potion.blindness.id, Config.sicknessTicks/4, 0, false, false));
-		player.addPotionEffect(new PotionEffect(Potion.moveSlowdown.id, Config.sicknessTicks, 0, false, false));
+		player.addPotionEffect(new PotionEffect(Potion.weakness.id, Config.sicknessTicks, 0, false));
+		player.addPotionEffect(new PotionEffect(Potion.digSlowdown.id, Config.sicknessTicks, 0, false));
+		player.addPotionEffect(new PotionEffect(Potion.blindness.id, Config.sicknessTicks/4, 0, false));
+		player.addPotionEffect(new PotionEffect(Potion.moveSlowdown.id, Config.sicknessTicks, 0, false));
 	}
 	
 	@SubscribeEvent
@@ -168,7 +164,7 @@ public class HEEventHandler
 				}
 				if(Config.ghostInvisibility == true)
 				{
-					player.addPotionEffect(new PotionEffect(Potion.invisibility.id, 5, 0, false, false));
+					player.addPotionEffect(new PotionEffect(Potion.invisibility.id, 5, 0, false));
 				}
 			}
 			
@@ -176,15 +172,15 @@ public class HEEventHandler
 			{
 				if(player.getHealth() == player.getMaxHealth())
 				{
-					player.addPotionEffect(new PotionEffect(Potion.damageBoost.id, 5, 0, false, false));
+					player.addPotionEffect(new PotionEffect(Potion.damageBoost.id, 5, 0, false));
 				}
 				if(player.getHealth() < player.getMaxHealth()/3)
 				{
-					player.addPotionEffect(new PotionEffect(Potion.moveSlowdown.id, 50, 0, false, false));
+					player.addPotionEffect(new PotionEffect(Potion.moveSlowdown.id, 50, 0, false));
 				}
 				if(player.getHealth() < player.getMaxHealth()/2)
 				{
-					player.addPotionEffect(new PotionEffect(Potion.digSlowdown.id, 50, 0, false, false));
+					player.addPotionEffect(new PotionEffect(Potion.digSlowdown.id, 50, 0, false));
 				}
 			}
 		}
@@ -282,7 +278,7 @@ public class HEEventHandler
 			{
 				if(rand.nextInt(100) < Config.zombiePoisonChance)
 				{
-					player.addPotionEffect(new PotionEffect(Potion.poison.id, 150, 0, false, false));
+					player.addPotionEffect(new PotionEffect(Potion.poison.id, 150, 0, false));
 				}
 			}
 			
@@ -290,7 +286,7 @@ public class HEEventHandler
 			{
 				if(rand.nextInt(100) < Config.fallStunChance)
 				{
-					player.addPotionEffect(new PotionEffect(Potion.moveSlowdown.id, 150, 0, false, false));
+					player.addPotionEffect(new PotionEffect(Potion.moveSlowdown.id, 150, 0, false));
 				}
 			}
 		}
@@ -305,7 +301,7 @@ public class HEEventHandler
 	
 		if(nbt.getBoolean("ghost") == true)
 		{
-			Block block = player.worldObj.getBlockState(event.pos).getBlock();
+			Block block = player.worldObj.getBlock(event.x, event.y, event.z);
 			if(event.action == Action.RIGHT_CLICK_BLOCK && interactableBlocks.contains(block))
 			{
 				
@@ -326,6 +322,15 @@ public class HEEventHandler
 					event.setCanceled(false);
 				}
 			}
+		}
+	}
+	
+	@SubscribeEvent
+	public void toolTip(ItemTooltipEvent event)
+	{
+		if(Helper.woodenTools.contains(event.itemStack.getItem()) && Config.woodenToolDamage == false)
+		{
+			event.toolTip.add("This tool can't do any real damage!");
 		}
 	}
 }
