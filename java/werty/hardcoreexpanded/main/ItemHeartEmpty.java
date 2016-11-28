@@ -2,11 +2,12 @@ package werty.hardcoreexpanded.main;
 
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.MobEffects;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
-import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.World;
 
 public class ItemHeartEmpty extends Item 
@@ -32,9 +33,9 @@ public class ItemHeartEmpty extends Item
 		         {
 		        	 if(!worldIn.isRemote)
 		        	 {
-		        		 playerIn.addChatMessage(new ChatComponentText("You feel weak after transfering energy to the crystal"));
+		        		 playerIn.addChatMessage(new TextComponentString("You feel weak after transfering energy to the crystal"));
 		        	 }
-		        	 playerIn.addPotionEffect(new PotionEffect(Potion.weakness.id, Config.sicknessTicks, 0, false, false));
+		        	 playerIn.addPotionEffect(new PotionEffect(MobEffects.WEAKNESS, Config.sicknessTicks, 1, false, false));//weakness
 		         }
 		         return new ItemStack(HEItems.heart_full);
 			}

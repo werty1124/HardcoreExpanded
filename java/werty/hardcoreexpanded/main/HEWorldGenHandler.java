@@ -2,13 +2,11 @@ package werty.hardcoreexpanded.main;
 
 import java.util.Random;
 
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraft.world.biome.BiomeGenBase;
-import net.minecraft.world.biome.WorldChunkManager;
 import net.minecraft.world.chunk.Chunk;
+import net.minecraft.world.chunk.IChunkGenerator;
 import net.minecraft.world.chunk.IChunkProvider;
-import net.minecraft.world.gen.ChunkProviderGenerate;
 import net.minecraftforge.fml.common.IWorldGenerator;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
@@ -20,9 +18,9 @@ public class HEWorldGenHandler implements IWorldGenerator
 	}
 
 	@Override
-	public void generate(Random random, int chunkX, int chunkZ, World world, IChunkProvider chunkGenerator, IChunkProvider chunkProvider) 
+	public void generate(Random random, int chunkX, int chunkZ, World world, IChunkGenerator chunkGenerator, IChunkProvider chunkProvider)
 	{
-		if (chunkGenerator instanceof ChunkProviderGenerate)
+		if (world.provider.isSurfaceWorld())
 		{
 			this.generateOverworld(world, random, chunkX, chunkZ);
 		}
@@ -35,9 +33,7 @@ public class HEWorldGenHandler implements IWorldGenerator
 		int z1 = z;
 		BlockPos pos = new BlockPos(x1 * 16, 0, z1 * 16);
 		Chunk chunk = world.getChunkFromBlockCoords(pos);
-		WorldChunkManager chunkManager = world.getWorldChunkManager();
-		BiomeGenBase biome = chunk.getBiome(pos, chunkManager);
-		
+
 		if(Config.genGhostAltar == true)
 		{
 			this.generateAltar(world, rand, x1, z1);

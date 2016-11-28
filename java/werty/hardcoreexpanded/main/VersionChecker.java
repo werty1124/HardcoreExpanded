@@ -1,11 +1,11 @@
 package werty.hardcoreexpanded.main;
 
+import net.minecraft.util.text.TextComponentString;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
-
-import net.minecraft.util.ChatComponentText;
 
 public class VersionChecker implements Runnable
 {
@@ -15,7 +15,7 @@ public class VersionChecker implements Runnable
 	
 	public static boolean			hasChecked	= false;
 	
-	public static ChatComponentText	uptoDate;
+	public static TextComponentString uptoDate;
 	
 	public VersionChecker(String versionToCheck, String url, String name)
 	{
@@ -42,12 +42,12 @@ public class VersionChecker implements Runnable
 					if (version.equals(versiontocheck))
 					{
 						upToDate = true;
-						uptoDate = new ChatComponentText("§2"+ name + " is the current version");
+						uptoDate = new TextComponentString(name + " is the current version");
 					}
 					else
 					{
 						upToDate = false;
-						uptoDate = new ChatComponentText("§cA newer version of " + name +" is available: " + version);
+						uptoDate = new TextComponentString("A newer version of " + name +" is available: " + version);
 					}
 				}
 			}
@@ -56,7 +56,7 @@ public class VersionChecker implements Runnable
 		catch (IOException e)
 		{
 			System.err.println("Version file not found at: " + urlToCheck);
-			uptoDate = new ChatComponentText("§c"+ name +" cannont find the latest version.");
+			uptoDate = new TextComponentString(name +" cannont find the latest version.");
 		}
 		return upToDate;
 	}

@@ -11,11 +11,13 @@ import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.init.MobEffects;
 import net.minecraft.item.Item;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
-import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.text.TextComponentString;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
@@ -23,7 +25,7 @@ import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.player.EntityItemPickupEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
-import net.minecraftforge.event.entity.player.PlayerInteractEvent.Action;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent.RightClickBlock;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
@@ -37,14 +39,14 @@ public class HEEventHandler
 
 	public static void loadAllowedBlocksandItems()
 	{
-		interactableBlocks.add(Blocks.acacia_door);
-		interactableBlocks.add(Blocks.oak_door);
-		interactableBlocks.add(Blocks.birch_door);
-		interactableBlocks.add(Blocks.spruce_door);
-		interactableBlocks.add(Blocks.dark_oak_door);
-		interactableBlocks.add(Blocks.lever);
-		interactableBlocks.add(Blocks.wooden_button);
-		interactableBlocks.add(Blocks.stone_button);
+		interactableBlocks.add(Blocks.ACACIA_DOOR);
+		interactableBlocks.add(Blocks.OAK_DOOR);
+		interactableBlocks.add(Blocks.BIRCH_DOOR);
+		interactableBlocks.add(Blocks.SPRUCE_DOOR);
+		interactableBlocks.add(Blocks.DARK_OAK_DOOR);
+		interactableBlocks.add(Blocks.LEVER);
+		interactableBlocks.add(Blocks.WOODEN_BUTTON);
+		interactableBlocks.add(Blocks.STONE_BUTTON);
 		interactableBlocks.add(HEBlocks.ghostAltar);
 		
 		for(String s : Config.interactableBlocks.split(","))
@@ -82,44 +84,44 @@ public class HEEventHandler
 	public void onPlayerJoin(EntityJoinWorldEvent event)
 	{
 		VersionChecker check = new VersionChecker(References.VERSION, "https://raw.githubusercontent.com/werty1124/SofterHardcore/master/version.txt", References.NAME);
-		if (event.entity instanceof EntityPlayer)
+		if (event.getEntity() instanceof EntityPlayer)
 		{
-			EntityPlayer player = (EntityPlayer) event.entity;
+			EntityPlayer player = (EntityPlayer) event.getEntity();
 			NBTTagCompound nbt = NBTHelper.getPersistedPlayerTag(player);
 
-			if(!event.world.isRemote)
+			if(!event.getWorld().isRemote)
 			{
 				if(player.worldObj.getWorldInfo().isHardcoreModeEnabled())
 				{
-					event.entity.addChatMessage(new ChatComponentText("SofterHardcore is meant to be played in survival. It will NOT prevent the deletion of worlds!"));
+					event.getEntity().addChatMessage(new TextComponentString("SofterHardcore is meant to be played in survival. It will NOT prevent the deletion of worlds!"));
 				}
 				if(Config.checkForUpdates && !HardcoreExpanded.hasCheckedVersion)
 				{
 					check.run();
-					event.entity.addChatMessage(VersionChecker.uptoDate);
+					event.getEntity().addChatMessage(VersionChecker.uptoDate);
 					HardcoreExpanded.hasCheckedVersion = true;
 				}
 			}	
 			if(nbt.hasKey("ghost") && nbt.getBoolean("ghost") == true)
 			{
-				if(!event.world.isRemote)
+				if(!event.getWorld().isRemote)
 				{
-					event.entity.addChatMessage(new ChatComponentText("You have exhausted all of your lives and can no longer interact with the world"));
+					event.getEntity().addChatMessage(new TextComponentString("You have exhausted all of your lives and can no longer interact with the world"));
 				}
 			}
 			else
 			{
-				player.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(Config.healthStarting);
+				player.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(Config.healthStarting);
 				if(nbt.hasKey("health"))
 				{
-					player.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(nbt.getDouble("health"));
+					player.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(nbt.getDouble("health"));
 				}
 			}
 			
-			if(Config.ghostMode == false && player.getMaxHealth() <= 0)
+			if(!Config.ghostMode && player.getMaxHealth() <= 0)
 			{
 				addDebuffs(player);
-				player.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(Config.healthStarting/2);
+				player.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(Config.healthStarting/2);
 				nbt.setDouble("health", player.getMaxHealth());
 			}
 		}
@@ -127,20 +129,20 @@ public class HEEventHandler
 	
 	public void addDebuffs(EntityPlayer player)
 	{
-		player.addPotionEffect(new PotionEffect(Potion.weakness.id, Config.sicknessTicks, 0, false, false));
-		player.addPotionEffect(new PotionEffect(Potion.digSlowdown.id, Config.sicknessTicks, 0, false, false));
-		player.addPotionEffect(new PotionEffect(Potion.blindness.id, Config.sicknessTicks/4, 0, false, false));
-		player.addPotionEffect(new PotionEffect(Potion.moveSlowdown.id, Config.sicknessTicks, 0, false, false));
+		player.addPotionEffect(new PotionEffect(MobEffects.WEAKNESS, Config.sicknessTicks, 0, false, false));
+		player.addPotionEffect(new PotionEffect(MobEffects.MINING_FATIGUE, Config.sicknessTicks, 0, false, false));
+		player.addPotionEffect(new PotionEffect(MobEffects.BLINDNESS, Config.sicknessTicks/4, 0, false, false));
+		player.addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, Config.sicknessTicks, 0, false, false));
 	}
 	
 	@SubscribeEvent
 	public void onPlayerDeath(LivingDeathEvent event)
 	{
-		if(event.entity instanceof EntityPlayer)
+		if(event.getEntity() instanceof EntityPlayer)
 		{
-			EntityPlayer player = (EntityPlayer) event.entity;
+			EntityPlayer player = (EntityPlayer) event.getEntity();
 			NBTTagCompound nbt = NBTHelper.getPersistedPlayerTag(player);
-			player.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(player.getMaxHealth() - 2D);
+			player.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(player.getMaxHealth() - 2D);
 			nbt.setDouble("health", player.getMaxHealth());
 			if(player.getMaxHealth() <= 0)
 			{
@@ -155,9 +157,9 @@ public class HEEventHandler
 	@SubscribeEvent
 	public void onUpdate(LivingUpdateEvent event)
 	{
-		if(event.entity instanceof EntityPlayer)
+		if(event.getEntity()instanceof EntityPlayer)
 		{	
-			EntityPlayer player = (EntityPlayer) event.entity;
+			EntityPlayer player = (EntityPlayer) event.getEntity();
 			NBTTagCompound nbt = NBTHelper.getPersistedPlayerTag(player);
 
 			if(nbt.getBoolean("ghost") == true)
@@ -168,7 +170,7 @@ public class HEEventHandler
 				}
 				if(Config.ghostInvisibility == true)
 				{
-					player.addPotionEffect(new PotionEffect(Potion.invisibility.id, 5, 0, false, false));
+					player.addPotionEffect(new PotionEffect(MobEffects.INVISIBILITY, 5, 0, false, false));
 				}
 			}
 			
@@ -176,15 +178,15 @@ public class HEEventHandler
 			{
 				if(player.getHealth() == player.getMaxHealth())
 				{
-					player.addPotionEffect(new PotionEffect(Potion.damageBoost.id, 5, 0, false, false));
+					player.addPotionEffect(new PotionEffect(MobEffects.INVISIBILITY, 5, 0, false, false));
 				}
 				if(player.getHealth() < player.getMaxHealth()/3)
 				{
-					player.addPotionEffect(new PotionEffect(Potion.moveSlowdown.id, 50, 0, false, false));
+					player.addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 50, 0, false, false));
 				}
 				if(player.getHealth() < player.getMaxHealth()/2)
 				{
-					player.addPotionEffect(new PotionEffect(Potion.digSlowdown.id, 50, 0, false, false));
+					player.addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 50, 0, false, false));
 				}
 			}
 		}
@@ -193,12 +195,12 @@ public class HEEventHandler
 	@SubscribeEvent
 	public void onItemPickup(EntityItemPickupEvent event)
 	{
-		if(event.entity instanceof EntityPlayer)
+		if(event.getEntity() instanceof EntityPlayer)
 		{
-			EntityPlayer player = (EntityPlayer) event.entity;
+			EntityPlayer player = (EntityPlayer) event.getEntity();
 			NBTTagCompound nbt = NBTHelper.getPersistedPlayerTag(player);
 			
-			Item item = event.item.getEntityItem().getItem();
+			Item item = event.getItem().getEntityItem().getItem();
 			if(nbt.getBoolean("ghost") == true && usableItems.contains(item) == false)
 			{
 				event.setCanceled(true);
@@ -209,14 +211,14 @@ public class HEEventHandler
 	@SubscribeEvent
 	public void onEntityHurt(LivingHurtEvent event)
 	{
-		if(event.entity instanceof EntityPlayer && event.source.getEntity() != null)
+		if(event.getEntity() instanceof EntityPlayer && event.getSource().getEntity() != null)
 		{
-			EntityPlayer player = (EntityPlayer) event.entity;
+			EntityPlayer player = (EntityPlayer) event.getEntity();
 			NBTTagCompound nbt = NBTHelper.getPersistedPlayerTag(player);
 			
-			if(!(event.source.getEntity() instanceof EntityPlayer))
+			if(!(event.getSource().getEntity() instanceof EntityPlayer))
 			{
-				event.ammount += Config.damageBoost;
+				event.setAmount(event.getAmount() + Config.damageBoost);
 			}
 			
 			if(nbt.getBoolean("ghost") == true)
@@ -226,9 +228,9 @@ public class HEEventHandler
 			
 		}
 		
-		if(event.entity instanceof EntityPlayer)
+		if(event.getEntity() instanceof EntityPlayer)
 		{
-			EntityPlayer player = (EntityPlayer) event.entity;
+			EntityPlayer player = (EntityPlayer) event.getEntity();
 			NBTTagCompound nbt = NBTHelper.getPersistedPlayerTag(player);
 			
 			if(nbt.getBoolean("ghost") == true)
@@ -237,22 +239,22 @@ public class HEEventHandler
 			}
 		}
 			
-		if(event.source.getEntity() instanceof EntityPlayer)
+		if(event.getSource().getEntity() instanceof EntityPlayer)
 		{
-			EntityPlayer player = (EntityPlayer) event.source.getEntity();
+			EntityPlayer player = (EntityPlayer) event.getSource().getEntity();
 			NBTTagCompound nbt = NBTHelper.getPersistedPlayerTag(player);
 			
 			
 			Item item = null;
 			
-			if(player.getHeldItem() != null)
+			if(player.getHeldItem(EnumHand.MAIN_HAND) != null)
 			{
-				item = player.getHeldItem().getItem();
+				item = player.getHeldItem(EnumHand.MAIN_HAND).getItem();
 			}
 			
-			if(item != null && (item == Items.wooden_axe || item == Items.wooden_sword || item == Items.wooden_shovel || item == Items.wooden_pickaxe || item == Items.wooden_hoe) && Config.woodenToolDamage == false)
+			if(item != null && (item == Items.WOODEN_AXE || item == Items.WOODEN_SWORD || item == Items.WOODEN_SHOVEL || item == Items.WOODEN_PICKAXE || item == Items.WOODEN_HOE) && Config.woodenToolDamage == false)
 			{
-				event.ammount = 0;
+				event.setAmount(0);
 			}
 		}
 	}
@@ -260,9 +262,9 @@ public class HEEventHandler
 	@SubscribeEvent
 	public void onPlayerAttack(LivingAttackEvent event)
 	{
-		if(event.source.getEntity() instanceof EntityPlayer && event.source.getEntity() != null)
+		if(event.getSource().getEntity() instanceof EntityPlayer && event.getSource().getEntity() != null)
 		{
-			EntityPlayer player = (EntityPlayer) event.source.getEntity();
+			EntityPlayer player = (EntityPlayer) event.getSource().getEntity();
 			NBTTagCompound nbt = NBTHelper.getPersistedPlayerTag(player);
 			
 			if(nbt.getBoolean("ghost") == true)
@@ -272,25 +274,25 @@ public class HEEventHandler
 		
 		}
 		
-		if(event.entityLiving instanceof EntityPlayer && Config.mobEffects == true)
+		if(event.getEntityLiving()instanceof EntityPlayer && Config.mobEffects == true)
 		{
-			EntityPlayer player = (EntityPlayer) event.entityLiving;
+			EntityPlayer player = (EntityPlayer) event.getEntityLiving();
 			NBTTagCompound nbt = NBTHelper.getPersistedPlayerTag(player);
 			Random rand = new Random();
 			
-			if(event.source.getEntity() instanceof EntityZombie && event.source.getEntity() != null)
+			if(event.getSource().getEntity() instanceof EntityZombie && event.getSource().getEntity() != null)
 			{
 				if(rand.nextInt(100) < Config.zombiePoisonChance)
 				{
-					player.addPotionEffect(new PotionEffect(Potion.poison.id, 150, 0, false, false));
+					player.addPotionEffect(new PotionEffect(MobEffects.POISON, 150, 0, false, false));
 				}
 			}
 			
-			if("fall".equals(event.source.damageType))
+			if("fall".equals(event.getSource().damageType))
 			{
 				if(rand.nextInt(100) < Config.fallStunChance)
 				{
-					player.addPotionEffect(new PotionEffect(Potion.moveSlowdown.id, 150, 0, false, false));
+					player.addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 150, 0, false, false));
 				}
 			}
 		}
@@ -298,30 +300,36 @@ public class HEEventHandler
 	}
 	
 	@SubscribeEvent
-	public void onPlayerInteract(PlayerInteractEvent event)
+	public void onPlayerInteract(PlayerInteractEvent.RightClickBlock event)
 	{
-		EntityPlayer player = (EntityPlayer) event.entity;
+		EntityPlayer player = (EntityPlayer) event.getEntity();
 		NBTTagCompound nbt = NBTHelper.getPersistedPlayerTag(player);
 	
 		if(nbt.getBoolean("ghost") == true)
 		{
-			Block block = player.worldObj.getBlockState(event.pos).getBlock();
-			if(event.action == Action.RIGHT_CLICK_BLOCK && interactableBlocks.contains(block))
-			{
-				
-			}
-			else if(event.action == Action.LEFT_CLICK_BLOCK && breakableBlocks.contains(block))
-			{
-				
-			}
-			else
+			Block block = player.worldObj.getBlockState(event.getPos()).getBlock();
+			if(!interactableBlocks.contains(block))
 			{
 				event.setCanceled(true);
-			}	
-			
-			if(event.action != Action.LEFT_CLICK_BLOCK && player.getHeldItem() != null)
+			}
+		}
+	}
+	@SubscribeEvent
+	public void onPlayerInteract(PlayerInteractEvent.LeftClickBlock event)
+	{
+		EntityPlayer player = (EntityPlayer) event.getEntity();
+		NBTTagCompound nbt = NBTHelper.getPersistedPlayerTag(player);
+
+		if(nbt.getBoolean("ghost") == true)
+		{
+			Block block = player.worldObj.getBlockState(event.getPos()).getBlock();
+			if(!breakableBlocks.contains(block))
 			{
-				if(usableItems.contains(player.getHeldItem().getItem()))
+				event.setCanceled(true);
+			}
+			if(player.getHeldItem(EnumHand.MAIN_HAND) != null)
+			{
+				if(usableItems.contains(player.getHeldItem(EnumHand.MAIN_HAND).getItem()))
 				{
 					event.setCanceled(false);
 				}

@@ -1,7 +1,7 @@
 package werty.hardcoreexpanded.main;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.resources.model.ModelResourceLocation;
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -13,16 +13,16 @@ public class HEItems
 {
 	public static Item  heart_empty;
 	public static Item  heart_full;
-	
+
 	public static void init()
 	{
-		heart_empty = new ItemHeartEmpty().setUnlocalizedName("heart_empty").setCreativeTab(CreativeTabs.tabMisc);
-		heart_full = new ItemHeartFull().setUnlocalizedName("heart_full").setCreativeTab(CreativeTabs.tabMisc);
+		heart_empty = new ItemHeartEmpty().setUnlocalizedName("heart_empty").setCreativeTab(CreativeTabs.MISC);
+		heart_full = new ItemHeartFull().setUnlocalizedName("heart_full").setCreativeTab(CreativeTabs.MISC);
 		
 		register(heart_empty);
 		register(heart_full);
 		
-		GameRegistry.addRecipe(new ItemStack(heart_empty, 1), new Object[] {"D D", "DBD", " D ", 'D', Items.diamond, 'B', Blocks.diamond_block});
+		GameRegistry.addRecipe(new ItemStack(heart_empty, 1), new Object[] {"D D", "DBD", " D ", 'D', Items.DIAMOND, 'B', Blocks.DIAMOND_BLOCK});
 	}
 	
 	public static void register(Item item)
