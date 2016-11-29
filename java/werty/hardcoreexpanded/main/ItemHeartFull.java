@@ -4,6 +4,9 @@ import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.World;
 
@@ -13,8 +16,9 @@ public class ItemHeartFull extends Item
 	{
 		this.maxStackSize = 1;
 	}
-	
-	public ItemStack onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn)
+
+	@Override
+	public ActionResult<ItemStack> onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn, EnumHand hand)
     {
 	    --itemStackIn.stackSize;
 	    if(NBTHelper.getPersistedPlayerTag(playerIn).hasKey("ghost") && NBTHelper.getPersistedPlayerTag(playerIn).getBoolean("ghost"))
@@ -32,6 +36,6 @@ public class ItemHeartFull extends Item
 				NBTHelper.getPersistedPlayerTag(playerIn).setDouble("health", playerIn.getMaxHealth());
 	    	}
 	    }
-        return itemStackIn;
+        return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, itemStackIn);
     }
 }

@@ -8,11 +8,15 @@ import net.minecraft.entity.effect.EntityLightningBolt;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.BlockRenderLayer;
+import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
 
@@ -29,7 +33,7 @@ public class BlockAltar extends Block
 		if(!worldIn.isRemote)
 		{
 			NBTTagCompound nbt = NBTHelper.getPersistedPlayerTag(playerIn);
-			if(nbt.getBoolean("ghost") == true)
+			if(nbt.getBoolean("ghost"))
 			{
 				worldIn.addWeatherEffect(new EntityLightningBolt(worldIn, pos.getX(), pos.getY(), pos.getZ(), false));
 				worldIn.destroyBlock(pos, false);
@@ -44,6 +48,24 @@ public class BlockAltar extends Block
 			}
 		}
 		return true;
+	}
+
+	@SideOnly(Side.CLIENT)
+	public BlockRenderLayer getBlockLayer() {return BlockRenderLayer.CUTOUT;}
+
+	@Override
+	public boolean isOpaqueCube(IBlockState iBlockState) {
+		return false;
+	}
+
+	@Override
+	public boolean isFullCube(IBlockState iBlockState) {
+		return false;
+	}
+
+	@Override
+	public EnumBlockRenderType getRenderType(IBlockState iBlockState) {
+		return EnumBlockRenderType.MODEL;
 	}
 	
 }

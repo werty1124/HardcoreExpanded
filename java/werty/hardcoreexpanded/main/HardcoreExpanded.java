@@ -9,6 +9,7 @@ import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 
 @Mod(modid = References.MODID, name = References.NAME, version = References.VERSION)
 public class HardcoreExpanded
@@ -37,7 +38,7 @@ public class HardcoreExpanded
 		proxy.registerRenders();
 		proxy.init(event);	
 		HEEventHandler.loadAllowedBlocksandItems();
-		HEWorldGenHandler.load();
+		GameRegistry.registerWorldGenerator(new HEWorldGenHandler(), 0);
 	}
 	
 	@EventHandler

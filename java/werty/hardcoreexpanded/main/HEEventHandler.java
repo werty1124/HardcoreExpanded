@@ -1,11 +1,6 @@
 package werty.hardcoreexpanded.main;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-
 import net.minecraft.block.Block;
-import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.entity.player.EntityPlayer;
@@ -14,7 +9,6 @@ import net.minecraft.init.Items;
 import net.minecraft.init.MobEffects;
 import net.minecraft.item.Item;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.text.TextComponentString;
@@ -25,9 +19,12 @@ import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.player.EntityItemPickupEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
-import net.minecraftforge.event.entity.player.PlayerInteractEvent.RightClickBlock;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 public class HEEventHandler 
 {
@@ -102,7 +99,7 @@ public class HEEventHandler
 					HardcoreExpanded.hasCheckedVersion = true;
 				}
 			}	
-			if(nbt.hasKey("ghost") && nbt.getBoolean("ghost") == true)
+			if(nbt.hasKey("ghost") && nbt.getBoolean("ghost"))
 			{
 				if(!event.getWorld().isRemote)
 				{
@@ -162,13 +159,13 @@ public class HEEventHandler
 			EntityPlayer player = (EntityPlayer) event.getEntity();
 			NBTTagCompound nbt = NBTHelper.getPersistedPlayerTag(player);
 
-			if(nbt.getBoolean("ghost") == true)
+			if(nbt.getBoolean("ghost"))
 			{
 				if(player.getFoodStats().getFoodLevel() < 20)
 				{
 					player.getFoodStats().setFoodLevel(20);
 				}
-				if(Config.ghostInvisibility == true)
+				if(Config.ghostInvisibility)
 				{
 					player.addPotionEffect(new PotionEffect(MobEffects.INVISIBILITY, 5, 0, false, false));
 				}
@@ -201,7 +198,7 @@ public class HEEventHandler
 			NBTTagCompound nbt = NBTHelper.getPersistedPlayerTag(player);
 			
 			Item item = event.getItem().getEntityItem().getItem();
-			if(nbt.getBoolean("ghost") == true && usableItems.contains(item) == false)
+			if(nbt.getBoolean("ghost") && !usableItems.contains(item))
 			{
 				event.setCanceled(true);
 			}
@@ -221,7 +218,7 @@ public class HEEventHandler
 				event.setAmount(event.getAmount() + Config.damageBoost);
 			}
 			
-			if(nbt.getBoolean("ghost") == true)
+			if(nbt.getBoolean("ghost"))
 			{
 				event.setCanceled(true);
 			}
@@ -233,7 +230,7 @@ public class HEEventHandler
 			EntityPlayer player = (EntityPlayer) event.getEntity();
 			NBTTagCompound nbt = NBTHelper.getPersistedPlayerTag(player);
 			
-			if(nbt.getBoolean("ghost") == true)
+			if(nbt.getBoolean("ghost"))
 			{
 				event.setCanceled(true);
 			}
@@ -252,7 +249,7 @@ public class HEEventHandler
 				item = player.getHeldItem(EnumHand.MAIN_HAND).getItem();
 			}
 			
-			if(item != null && (item == Items.WOODEN_AXE || item == Items.WOODEN_SWORD || item == Items.WOODEN_SHOVEL || item == Items.WOODEN_PICKAXE || item == Items.WOODEN_HOE) && Config.woodenToolDamage == false)
+			if(item != null && (item == Items.WOODEN_AXE || item == Items.WOODEN_SWORD || item == Items.WOODEN_SHOVEL || item == Items.WOODEN_PICKAXE || item == Items.WOODEN_HOE) && !Config.woodenToolDamage)
 			{
 				event.setAmount(0);
 			}
@@ -267,14 +264,14 @@ public class HEEventHandler
 			EntityPlayer player = (EntityPlayer) event.getSource().getEntity();
 			NBTTagCompound nbt = NBTHelper.getPersistedPlayerTag(player);
 			
-			if(nbt.getBoolean("ghost") == true)
+			if(nbt.getBoolean("ghost"))
 			{
 				event.setCanceled(true);
 			}
 		
 		}
 		
-		if(event.getEntityLiving()instanceof EntityPlayer && Config.mobEffects == true)
+		if(event.getEntityLiving()instanceof EntityPlayer && Config.mobEffects)
 		{
 			EntityPlayer player = (EntityPlayer) event.getEntityLiving();
 			NBTTagCompound nbt = NBTHelper.getPersistedPlayerTag(player);
@@ -305,7 +302,7 @@ public class HEEventHandler
 		EntityPlayer player = (EntityPlayer) event.getEntity();
 		NBTTagCompound nbt = NBTHelper.getPersistedPlayerTag(player);
 	
-		if(nbt.getBoolean("ghost") == true)
+		if(nbt.getBoolean("ghost"))
 		{
 			Block block = player.worldObj.getBlockState(event.getPos()).getBlock();
 			if(!interactableBlocks.contains(block))
@@ -320,7 +317,7 @@ public class HEEventHandler
 		EntityPlayer player = (EntityPlayer) event.getEntity();
 		NBTTagCompound nbt = NBTHelper.getPersistedPlayerTag(player);
 
-		if(nbt.getBoolean("ghost") == true)
+		if(nbt.getBoolean("ghost"))
 		{
 			Block block = player.worldObj.getBlockState(event.getPos()).getBlock();
 			if(!breakableBlocks.contains(block))
