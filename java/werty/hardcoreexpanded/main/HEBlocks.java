@@ -3,7 +3,7 @@ package werty.hardcoreexpanded.main;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.resources.model.ModelResourceLocation;
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraftforge.fml.common.registry.GameRegistry;
@@ -14,7 +14,7 @@ public class HEBlocks
 	
 	public static void init()
 	{
-		ghostAltar = new BlockAltar(Material.rock).setBlockUnbreakable().setUnlocalizedName("ghost_altar").setCreativeTab(CreativeTabs.tabMisc);
+		ghostAltar = new BlockAltar(Material.ROCK).setBlockUnbreakable().setUnlocalizedName("ghost_altar").setCreativeTab(CreativeTabs.MISC);
 		
 		register(ghostAltar);
 	}

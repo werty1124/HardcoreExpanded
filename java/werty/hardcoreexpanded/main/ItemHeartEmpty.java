@@ -1,12 +1,14 @@
 package werty.hardcoreexpanded.main;
 
-import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.MobEffects;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
-import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.World;
 
 public class ItemHeartEmpty extends Item 
@@ -15,12 +17,12 @@ public class ItemHeartEmpty extends Item
 	{
 		this.setMaxStackSize(1);
 	}
-	
-	public ItemStack onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn)
+
+	public ActionResult<ItemStack> onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn, EnumHand hand)
     {
 		if(NBTHelper.getPersistedPlayerTag(playerIn).getBoolean("ghost") == true && Config.ghostFillHeart == false)
 		{
-			return itemStackIn;
+			return new ActionResult<ItemStack>(EnumActionResult.FAIL, itemStackIn);
 		}
 		else
 		{
@@ -28,18 +30,18 @@ public class ItemHeartEmpty extends Item
 			{
 				playerIn.experienceLevel -= Config.healthXP;
 		         --itemStackIn.stackSize;
-		         if(Config.fiilEffects)
+		         if(Config.fillEffects)
 		         {
 		        	 if(!worldIn.isRemote)
 		        	 {
-		        		 playerIn.addChatMessage(new ChatComponentText("You feel weak after transfering energy to the crystal"));
+		        		 playerIn.addChatMessage(new TextComponentString("You feel weak after transfering energy to the crystal"));
 		        	 }
-		        	 playerIn.addPotionEffect(new PotionEffect(Potion.weakness.id, Config.sicknessTicks, 0, false, false));
+		        	 playerIn.addPotionEffect(new PotionEffect(MobEffects.WEAKNESS, Config.sicknessTicks, 1, false, false));//weakness
 		         }
-		         return new ItemStack(HEItems.heart_full);
+		         return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, new ItemStack(HEItems.heart_full));
 			}
 		}
-		return itemStackIn;
+		return new ActionResult(EnumActionResult.FAIL, itemStackIn);
         
     }
 }
